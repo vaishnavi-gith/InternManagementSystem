@@ -1,57 +1,96 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const TaskManager = ({ interns={interns}, addTask }) => {
+const Tasks = ({ onAssign }) => {
   const [task, setTask] = useState("");
   const [selectedInterns, setSelectedInterns] = useState([]);
+  const [taskList, setTaskList] = useState([]);
 
-  const handleCheckboxChange = (id) => {
-    setSelectedInterns((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
-    );
+  const interns = [
+    { id: "1", name: "Alice Johnson" },
+    { id: "2", name: "Bob Smith" },
+    { id: "3", name: "Charlie Brown" },
+    { id: "4", name: "David Williams" },
+    { id: "5", name: "Emma Wilson" }
+  ];
+
+  const handleAddIntern = (id, name) => {
+    if (!selectedInterns.some((intern) => intern.id === id)) {
+      setSelectedInterns([...selectedInterns, { id, name }]);
+    }
   };
 
-  const handleSubmit = () => {
-    if (!task || selectedInterns.length === 0) {
-      alert("Please enter a task and select at least one intern.");
+  const handleRemoveIntern = (id) => {
+    setSelectedInterns(selectedInterns.filter((intern) => intern.id !== id));
+  };
+
+  const handleAssign = () => {
+    if (!task.trim()) {
+      alert("Please enter a task.");
       return;
     }
-    addTask(task, selectedInterns);
+    if (selectedInterns.length === 0) {
+      alert("Please select at least one intern.");
+      return;
+    }
+    const newTasks = selectedInterns.map((intern) => ({ internId: intern.id, task }));
+    setTaskList([...taskList, ...newTasks]);
+    newTasks.forEach(({ internId }) => onAssign(internId, task));
     setTask("");
     setSelectedInterns([]);
   };
 
   return (
-    <div className="w-2/3 bg-white shadow-lg rounded-lg p-6 border border-gray-300">
-      <h2 className="text-lg font-bold mb-4">Assign Task</h2>
+    <div className="p-4 bg-white shadow-lg rounded-lg ml-[260px] border border-gray-300 w-2/3">
+      <h2 className="text-xl font-semibold mb-3">Task Management</h2>
       <input
         type="text"
+        className="w-full p-2 border rounded mb-3"
+        placeholder="Enter task"
         value={task}
         onChange={(e) => setTask(e.target.value)}
-        placeholder="Enter task description"
-        className="w-full border p-2 rounded mb-4"
       />
       <h3 className="font-semibold mb-2">Assign to:</h3>
-      <div className="mb-4">
-        {interns.map((intern) => (
-          <label key={intern.id} className="block">
-            <input
-              type="checkbox"
-              checked={selectedInterns.includes(intern.id)}
-              onChange={() => handleCheckboxChange(intern.id)}
-              className="mr-2"
-            />
-            {intern.name}
-          </label>
-        ))}
+      <div className="w-full p-2 border rounded mb-3 min-h-[40px]">
+        {selectedInterns.length > 0 &&
+          selectedInterns.map((intern) => (
+            <span key={intern.id} className="inline-flex items-center bg-gray-200 px-3 py-1 rounded-full m-1">
+              {intern.name}
+              <button onClick={() => handleRemoveIntern(intern.id)} className="ml-2 text-red-500">✖</button>
+            </span>
+          ))}
       </div>
+      <select
+        className="w-full p-2 border rounded mb-3"
+        onChange={(e) => {
+          const selected = interns.find((intern) => intern.id === e.target.value);
+          if (selected) handleAddIntern(selected.id, selected.name);
+        }}
+      >
+        <option value="">Select an intern</option>
+        {interns.map((intern) => (
+          <option key={intern.id} value={intern.id}>
+            {intern.name}
+          </option>
+        ))}
+      </select>
       <button
-        onClick={handleSubmit}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+        onClick={handleAssign}
       >
         Assign Task
       </button>
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold">Assigned Tasks</h3>
+        <ul className="mt-2">
+          {taskList.map((t, index) => (
+            <li key={index} className="p-2 border-b">
+              {t.task} - {interns.find((i) => i.id === t.internId)?.name || "Unknown"}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
 
-export default TaskManager;
+export default Tasks;

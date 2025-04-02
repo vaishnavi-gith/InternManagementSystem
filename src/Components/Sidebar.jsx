@@ -39,7 +39,7 @@ const Sidebar = () => {
         </li>
         <li>
           <NavLink
-            to="/task"
+            to="/calender"
             className={({ isActive }) =>
               `block p-2 ${isActive ? "bg-gray-100" : "hover:bg-gray-100"}`
             }
@@ -49,7 +49,7 @@ const Sidebar = () => {
         </li>
         <li>
           <NavLink
-            to="/task"
+            to="/uploadDocs"
             className={({ isActive }) =>
               `block p-2 ${isActive ? "bg-gray-100" : "hover:bg-gray-100"}`
             }
@@ -59,7 +59,7 @@ const Sidebar = () => {
         </li>
         <li>
           <NavLink
-            to="/task"
+            to="/chat"
             className={({ isActive }) =>
               `block p-2 ${isActive ? "bg-gray-100" : "hover:bg-gray-100"}`
             }
