@@ -5,8 +5,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Login from "./Login";
-import Navbar from "./Navbar";
+import Login from "./Components/Authentication/Login";
+import Head from "./Components/Header/Head"
 import AdminDashboard from "./AdminDashboard";
 import InternDashboard from "./InternDashboard";
 import HRSidebar from "./HRSidebar";
@@ -22,7 +22,7 @@ import AddCourses from "./AddCourses";
 function App() {
   return (
     <Router>
-      <Navbar />
+      <Head />
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />

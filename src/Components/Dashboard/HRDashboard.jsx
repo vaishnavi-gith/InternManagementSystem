@@ -1,5 +1,5 @@
 import React from "react";
-import HRSidebar from "./HRSidebar"; // ✅ Import HR Sidebar
+import HRSidebar from "./HRSidebar";
 
 function HRDashboard() {
   return (

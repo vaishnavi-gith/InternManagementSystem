@@ -1,6 +1,6 @@
 import InternCard from "./InternCard";
 import Leaderboard from "./Leaderboard";
-import UpcomingEvents from "./UpcomingEvents";
+import UpcomingEvents from "../UpcomingEvents";
 
 const Dashboard = () => {
   
